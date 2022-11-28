@@ -7,10 +7,9 @@ namespace Sifra
     {
         static void Main(string[] args)
         {
-            string s = Console.ReadLine();
-            Console.WriteLine(Cesarova.CesarSifrovani(s, 2));
-            s = Console.ReadLine();
-            Console.WriteLine(Cesarova.CesarDesifrovani(s, 2));
+            string a = Console.ReadLine();
+            string b = Console.ReadLine();
+            Console.WriteLine(Vigenerova.Sifrovani(a,b));
         }
     }
 
@@ -65,7 +64,7 @@ namespace Sifra
             StringBuilder s = new StringBuilder(text);
             for (int i = 0; i < text.Length; i++)
             {
-
+                
 
                 if (Char.IsLower(text[i]))
                 {
@@ -99,6 +98,44 @@ namespace Sifra
             return s.ToString();
         }
 
+    }
+    
+    public class Vigenerova
+    {
+        public static string Sifrovani(string a, string b)
+        {
+            StringBuilder s = new StringBuilder(a);
+
+
+            for (int i = 0; i < a.Length; i++)
+            { 
+                int hodnotaA = (int)a[i];
+                int hodnotaB;
+                if (i >= b.Length)
+                {
+                    int x = i - b.Length;
+                    hodnotaB = (int)b[x];
+                }
+                else
+                {
+                     hodnotaB = (int)b[i];
+                }
+               
+
+                if(hodnotaB+hodnotaA > 126) 
+                {
+                    int index = (hodnotaA + hodnotaB) - 126;
+                    s[i] = (char)index;
+                }
+                else
+                {
+                    int index = hodnotaA + hodnotaB;
+                    s[i] = (char)index;
+                }
+            }
+            
+            return s.ToString();
+        }
     }
 
 }
