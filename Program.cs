@@ -8,7 +8,9 @@ namespace Sifra
         static void Main(string[] args)
         {
             string s = Console.ReadLine();
-            Console.WriteLine(Cesarova.CesarSifrovani(s, 2));    
+            Console.WriteLine(Cesarova.CesarSifrovani(s, 2));
+            s = Console.ReadLine();
+            Console.WriteLine(Cesarova.CesarDesifrovani(s, 2));
         }
     }
 
@@ -18,27 +20,83 @@ namespace Sifra
 
         public static string CesarSifrovani(string text, int posun)
         {
-            string abeceda = "abcčdďeěfghijklmnňopqrřďsštťuvqzž";
+            string abeceda = "abcčdďeěfghijklmnňopqrřsštťuvqzž";
             string capAbeceda = "ABCČDĎEĚFGHIJKLMNŇOPQRŘSŠTŤUVWZŽ";
             StringBuilder s = new StringBuilder(text);
             for (int i = 0; i < text.Length; i++)
             {   
-                int index = abeceda.IndexOf(text[i]);
-                if (index + posun > abeceda.Length)
-                { 
-                    index = (index + posun) - abeceda.Length;
-                }
+                
                 
                 if (Char.IsLower(text[i]))
-                {
-                    s[i] = abeceda[index+posun];
+                {   
+                    int index = abeceda.IndexOf(text[i]);
+                    
+                    if (index + posun >= abeceda.Length)
+                    { 
+                        index = (index + posun) - abeceda.Length;
+                        s[i] = abeceda[index];
+                    }
+                    else
+                    {
+                        s[i] = abeceda[index + posun];
+                    }
                 }
-                else {
-                    s[i] = capAbeceda[index + posun];
+                else
+                {
+                    int index = capAbeceda.IndexOf(text[i]);
+                    if (index + posun >= capAbeceda.Length)
+                    {
+                        index = (index + posun) - capAbeceda.Length;
+                        s[i] = capAbeceda[index];
+                    }
+                    else
+                    {
+                        s[i] = capAbeceda[index + posun];
+                    }
                 }
                 
             }
             return s.ToString() ;
+        }
+        public static string CesarDesifrovani(string text, int posun)
+        {
+            string abeceda = "abcčdďeěfghijklmnňopqrřsštťuvqzž";
+            string capAbeceda = "ABCČDĎEĚFGHIJKLMNŇOPQRŘSŠTŤUVWZŽ";
+            StringBuilder s = new StringBuilder(text);
+            for (int i = 0; i < text.Length; i++)
+            {
+
+
+                if (Char.IsLower(text[i]))
+                {
+                    int index = abeceda.IndexOf(text[i]);
+
+                    if (index - posun < 0)
+                    {
+                        index = (index - posun) + abeceda.Length;
+                        s[i] = abeceda[index];
+                    }
+                    else
+                    {
+                        s[i] = abeceda[index - posun];
+                    }
+                }
+                else
+                {
+                    int index = capAbeceda.IndexOf(text[i]);
+                    if (index - posun < 0)
+                    {
+                        index = (index - posun) + capAbeceda.Length;
+                        s[i] = capAbeceda[index];
+                    }
+                    else
+                    {
+                        s[i] = capAbeceda[index - posun];
+                    }
+                }
+
+            }
+            return s.ToString();
         }
 
     }
