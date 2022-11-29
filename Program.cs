@@ -10,6 +10,8 @@ namespace Sifra
             string a = Console.ReadLine();
             string b = Console.ReadLine();
             Console.WriteLine(Vigenerova.Sifrovani(a,b));
+            string c = Console.ReadLine();
+            Console.WriteLine(Vigenerova.Desifrovani(c,b));
         }
     }
 
@@ -105,23 +107,18 @@ namespace Sifra
         public static string Sifrovani(string a, string b)
         {
             StringBuilder s = new StringBuilder(a);
-
+            StringBuilder sb = new StringBuilder();
+            
+            for (int i = 0; i < (a.Length/b.Length)+1; i++)
+            {
+                sb.Append(b);
+            }
 
             for (int i = 0; i < a.Length; i++)
             { 
                 int hodnotaA = (int)a[i];
-                int hodnotaB;
-                if (i >= b.Length)
-                {
-                    int x = i - b.Length;
-                    hodnotaB = (int)b[x];
-                }
-                else
-                {
-                     hodnotaB = (int)b[i];
-                }
+                int hodnotaB = (int)sb[i];
                
-
                 if(hodnotaB+hodnotaA > 126) 
                 {
                     int index = (hodnotaA + hodnotaB) - 126;
@@ -134,6 +131,36 @@ namespace Sifra
                 }
             }
             
+            return s.ToString();
+        }
+        public static string Desifrovani(string a, string b)
+        {
+            StringBuilder s = new StringBuilder(a);
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < (a.Length / b.Length) + 1; i++)
+            {
+                sb.Append(b);
+            }
+
+            for (int i = 0; i < a.Length; i++)
+            {
+                int hodnotaA = (int)a[i];
+                int hodnotaB = (int)sb[i];
+                
+
+                if (hodnotaB - hodnotaA < 0 )
+                {
+                    int index = (hodnotaA - hodnotaB) + 126;
+                    s[i] = (char)index;
+                }
+                else
+                {
+                    int index = hodnotaA - hodnotaB;
+                    s[i] = (char)index;
+                }
+            }
+
             return s.ToString();
         }
     }
