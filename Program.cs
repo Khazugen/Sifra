@@ -10,159 +10,128 @@ namespace Sifra
             string a = Console.ReadLine();
             string b = Console.ReadLine();
             Console.WriteLine(Vigenerova.Sifrovani(a,b));
-            string c = Console.ReadLine();
-            Console.WriteLine(Vigenerova.Desifrovani(c,b));
+
         }
     }
 
     public class Cesarova
     {
-        
+
 
         public static string CesarSifrovani(string text, int posun)
         {
             string abeceda = "abcčdďeěfghijklmnňopqrřsštťuvqzž";
-            string capAbeceda = "ABCČDĎEĚFGHIJKLMNŇOPQRŘSŠTŤUVWZŽ";
             StringBuilder s = new StringBuilder(text);
             for (int i = 0; i < text.Length; i++)
-            {   
-                
-                
-                if (Char.IsLower(text[i]))
-                {   
-                    int index = abeceda.IndexOf(text[i]);
-                    
-                    if (index + posun >= abeceda.Length)
-                    { 
-                        index = (index + posun) - abeceda.Length;
-                        s[i] = abeceda[index];
-                    }
-                    else
-                    {
-                        s[i] = abeceda[index + posun];
-                    }
+            {
+
+                int index = abeceda.IndexOf(text[i]);
+
+                if (index + posun >= abeceda.Length)
+                {
+                    index = (index + posun) - abeceda.Length;
+                    s[i] = abeceda[index];
                 }
                 else
                 {
-                    int index = capAbeceda.IndexOf(text[i]);
-                    if (index + posun >= capAbeceda.Length)
-                    {
-                        index = (index + posun) - capAbeceda.Length;
-                        s[i] = capAbeceda[index];
-                    }
-                    else
-                    {
-                        s[i] = capAbeceda[index + posun];
-                    }
+                    s[i] = abeceda[index + posun];
                 }
-                
+
             }
-            return s.ToString() ;
+            return s.ToString();
         }
         public static string CesarDesifrovani(string text, int posun)
         {
             string abeceda = "abcčdďeěfghijklmnňopqrřsštťuvqzž";
-            string capAbeceda = "ABCČDĎEĚFGHIJKLMNŇOPQRŘSŠTŤUVWZŽ";
             StringBuilder s = new StringBuilder(text);
             for (int i = 0; i < text.Length; i++)
             {
-                
 
-                if (Char.IsLower(text[i]))
+                int index = abeceda.IndexOf(text[i]);
+
+                if (index - posun < 0)
                 {
-                    int index = abeceda.IndexOf(text[i]);
+                    index = (index - posun) + abeceda.Length;
+                    s[i] = abeceda[index];
+                }
+                else
+                {
+                    s[i] = abeceda[index - posun];
 
-                    if (index - posun < 0)
+
+                }
+
+
+            }
+            return s.ToString();
+        }
+    }
+
+        public class Vigenerova
+        {
+            public static string Sifrovani(string a, string b)
+            {
+                string abeceda = " abcčdďefghijklmnňopqrřsštťuvwxyzž";
+                StringBuilder s = new StringBuilder(a);
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < (a.Length / b.Length) + 1; i++)
+                {
+                    sb.Append(b);
+                }
+
+                for (int i = 0; i < a.Length; i++)
+                {
+                    int hodnotaA = abeceda.IndexOf(s[i]);
+                    int hodnotaB = abeceda.IndexOf(sb[i]);
+
+                    if (hodnotaB + hodnotaA > abeceda.Length)
                     {
-                        index = (index - posun) + abeceda.Length;
+                        double m = (hodnotaA + hodnotaB) / abeceda.Length;
+                        int v = (int)Math.Floor(m);
+                        int index = (hodnotaA + hodnotaB) - (abeceda.Length * v);
                         s[i] = abeceda[index];
                     }
                     else
                     {
-                        s[i] = abeceda[index - posun];
+                        int index = hodnotaA + hodnotaB;
+                        s[i] = abeceda[index];
                     }
                 }
-                else
+
+                return s.ToString();
+            }
+            public static string Desifrovani(string a, string b)
+            {
+                string abeceda = "abcčdďefghijklmnňopqrřsštťuvwxyzž";
+                StringBuilder s = new StringBuilder(a);
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < (a.Length / b.Length) + 1; i++)
                 {
-                    int index = capAbeceda.IndexOf(text[i]);
-                    if (index - posun < 0)
+                    sb.Append(b);
+                }
+
+                for (int i = 0; i < a.Length; i++)
+                {
+                    int hodnotaA = abeceda.IndexOf(s[i]);
+                    int hodnotaB = abeceda.IndexOf(sb[i]);
+
+                    if (hodnotaB - hodnotaA < 0)
                     {
-                        index = (index - posun) + capAbeceda.Length;
-                        s[i] = capAbeceda[index];
+                        int v = a.Length / b.Length;
+                        int index = (hodnotaA - hodnotaB) + (abeceda.Length * v);
+                        s[i] = abeceda[index];
                     }
                     else
                     {
-                        s[i] = capAbeceda[index - posun];
+                        int index = hodnotaA - hodnotaB;
+                        s[i] = abeceda[index];
                     }
                 }
 
+                return s.ToString();
             }
-            return s.ToString();
         }
 
     }
-    
-    public class Vigenerova
-    {
-        public static string Sifrovani(string a, string b)
-        {
-            StringBuilder s = new StringBuilder(a);
-            StringBuilder sb = new StringBuilder();
-            
-            for (int i = 0; i < (a.Length/b.Length)+1; i++)
-            {
-                sb.Append(b);
-            }
-
-            for (int i = 0; i < a.Length; i++)
-            { 
-                int hodnotaA = (int)a[i];
-                int hodnotaB = (int)sb[i];
-               
-                if(hodnotaB+hodnotaA > 126) 
-                {
-                    int index = (hodnotaA + hodnotaB) - 126;
-                    s[i] = (char)index;
-                }
-                else
-                {
-                    int index = hodnotaA + hodnotaB;
-                    s[i] = (char)index;
-                }
-            }
-            
-            return s.ToString();
-        }
-        public static string Desifrovani(string a, string b)
-        {
-            StringBuilder s = new StringBuilder(a);
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < (a.Length / b.Length) + 1; i++)
-            {
-                sb.Append(b);
-            }
-
-            for (int i = 0; i < a.Length; i++)
-            {
-                int hodnotaA = (int)a[i];
-                int hodnotaB = (int)sb[i];
-                
-
-                if (hodnotaB - hodnotaA < 0 )
-                {
-                    int index = (hodnotaA - hodnotaB) + 126;
-                    s[i] = (char)index;
-                }
-                else
-                {
-                    int index = hodnotaA - hodnotaB;
-                    s[i] = (char)index;
-                }
-            }
-
-            return s.ToString();
-        }
-    }
-
-}
